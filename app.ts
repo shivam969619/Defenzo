@@ -31,7 +31,7 @@ const limiter = rateLimit({
 
 //cors=>
 app.use(cors({
-    origin: ['http://localhost:3000'],
+    origin: ['https://defenzo.onrender.com'],
     credentials: true,
 }));
 //routes
