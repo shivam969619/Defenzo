@@ -10,27 +10,28 @@ interface ITokenOptions {
   sameSite: 'lax' | 'strict' | 'none' | undefined;
   secure?: boolean;
 }
- // Parse environment variables to integrate
- export const accessTokenExpire = parseInt(process.env.ACCESS_TOKEN_EXPIRE || '300', 10);
- const refreshTokenExpire = parseInt(process.env.REFRESH_TOKEN_EXPIRE || '1200', 10);
+// Parse environment variables to integrate
+export const accessTokenExpire = parseInt(process.env.ACCESS_TOKEN_EXPIRE || '300', 10);
+const refreshTokenExpire = parseInt(process.env.REFRESH_TOKEN_EXPIRE || '1200', 10);
 
- // Options for cookies
- export const accessTokenOptions: ITokenOptions = {
-   expires: new Date(Date.now() + accessTokenExpire *60* 60*1000),
-   maxAge: accessTokenExpire *60*60* 1000,
-   httpOnly: true,
-   sameSite: 'lax',
- };
+// Options for cookies
+export const accessTokenOptions: ITokenOptions = {
+  expires: new Date(Date.now() + accessTokenExpire * 60 * 60 * 1000),
+  maxAge: accessTokenExpire * 60 * 60 * 1000,
+  httpOnly: true,
+  sameSite: 'lax',
+};
 
- export const refreshTokenOptions: ITokenOptions = {
-   expires: new Date(Date.now() + refreshTokenExpire* 24*60*60 * 1000),
-   maxAge: refreshTokenExpire *24*60*60* 1000,
-   httpOnly: true,
-   sameSite: 'lax',
- };
+export const refreshTokenOptions: ITokenOptions = {
+  expires: new Date(Date.now() + refreshTokenExpire * 24 * 60 * 60 * 1000),
+  maxAge: refreshTokenExpire * 24 * 60 * 60 * 1000,
+  httpOnly: true,
+  sameSite: 'none',
+  secure: true
+};
 
 
-export const sendToken = (user: User , statusCode: number, res: Response) => {
+export const sendToken = (user: User, statusCode: number, res: Response) => {
   if (!user) {
     return res.status(500).json({
       success: false,
@@ -44,7 +45,7 @@ export const sendToken = (user: User , statusCode: number, res: Response) => {
   // Upload session to redis
   redis.set(user._id, JSON.stringify(user) as any);
 
- 
+
   // Only set secure to true in production
   if (process.env.NODE_ENV === 'production') {
     accessTokenOptions.secure = true;

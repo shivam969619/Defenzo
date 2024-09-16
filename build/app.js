@@ -33,7 +33,7 @@ const limiter = (0, express_rate_limit_1.rateLimit)({
 // Apply the rate limiting middleware to all requests.
 //cors=>
 exports.app.use((0, cors_1.default)({
-    origin: ['http://localhost:3000'],
+    origin: ['https://defenzo-frontend.vercel.app'],
     credentials: true,
 }));
 //routes
